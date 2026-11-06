@@ -1,0 +1,96 @@
+export type Status = "done" | "pending" | "stopped" | "failed" | "not-trained"
+
+export type Planner = {
+  name: string
+  code: string
+  baseline: string
+  variable: string
+  addedRows: number | null
+  totalRows: number | null
+  seed: number
+  steps: number | null
+  hardware: string
+  aw116: number | null
+  dev209: number | null
+  status: Status
+  note?: string
+}
+
+export const updatedAt = "2026-11-06"
+
+export const fixedRecipe = [
+  "每次从同一底座和 adapter 从头训练，不接着上一个模型训",
+  "全参数 CE，学习率 2e-6，视觉学习率 2e-7，warmup 3%",
+  "全局 batch 16，2 个 epoch，取 epoch-02",
+  "基础数据 27,228 行：OpenMobile 14,167 行 + AW 教师轨迹 13,061 行",
+  "评测：原生扩散解码，块长 16，每块 16 步，最多 4 块，T=0",
+]
+
+export const planners: Planner[] = [
+  { name: "Submission", code: "v8", baseline: "—", variable: "论文版，无 AW 数据，配方不同", addedRows: 0, totalRows: null, seed: 42, steps: null, hardware: "—", aw116: 9, dev209: null, status: "done" },
+  { name: "Teacher", code: "v9-awt1", baseline: "Submission", variable: "加教师轨迹，同时换 v9 配方", addedRows: 13061, totalRows: 27228, seed: 42, steps: 3404, hardware: "4×H100", aw116: 23, dev209: 48, status: "done" },
+  { name: "Teacher-Seed4242", code: "v9awt1s4242", baseline: "Teacher", variable: "只换 seed", addedRows: 0, totalRows: 27228, seed: 4242, steps: 3404, hardware: "待定", aw116: null, dev209: null, status: "not-trained" },
+  { name: "TeacherCorrect", code: "dagger", baseline: "Teacher", variable: "加教师纠错数据", addedRows: 4753, totalRows: 31981, seed: 42, steps: 3998, hardware: "4×H100", aw116: 27, dev209: null, status: "done" },
+  { name: "SelfLearn", code: "rft", baseline: "Teacher", variable: "加学生成功轨迹和分叉点纠正", addedRows: 1466, totalRows: 28694, seed: 42, steps: 3588, hardware: "4×H100", aw116: 32, dev209: 60, status: "done" },
+  { name: "SelfLearn-Seed4242", code: "rfts4242", baseline: "SelfLearn", variable: "只换 seed", addedRows: 0, totalRows: 28694, seed: 4242, steps: 3588, hardware: "待定", aw116: null, dev209: null, status: "not-trained" },
+  { name: "SelfLearn-Stop", code: "rftterm", baseline: "SelfLearn", variable: "加结束相关的行", addedRows: 259, totalRows: 28953, seed: 42, steps: 3620, hardware: "H100 + A800", aw116: null, dev209: null, status: "pending", note: "已训完，未评测" },
+  { name: "SelfLearn-NoFirstStep", code: "rftnos0", baseline: "SelfLearn", variable: "去掉第 0 步的行", addedRows: 1281, totalRows: 28509, seed: 42, steps: 3564, hardware: "待定", aw116: null, dev209: null, status: "not-trained" },
+  { name: "SelfLearn-Round2", code: "rftr1", baseline: "SelfLearn-NoFirstStep", variable: "加第二轮学生数据", addedRows: 2078, totalRows: 29306, seed: 42, steps: 3664, hardware: "4×H100", aw116: 31, dev209: 59, status: "done" },
+  { name: "SelfLearn-AC14k", code: "rftac", baseline: "SelfLearn", variable: "加 1.4 万行 AndroidControl", addedRows: 15469, totalRows: 42697, seed: 42, steps: 5338, hardware: "4×H100", aw116: 23, dev209: 68, status: "done" },
+  { name: "SelfLearn-ACFull", code: "rftacfull", baseline: "SelfLearn-AC14k", variable: "AC 换成全量", addedRows: 58148, totalRows: 85376, seed: 42, steps: 10672, hardware: "2×A800", aw116: null, dev209: null, status: "stopped", note: "第 964 步手动停止" },
+]
+
+export const grounders = [
+  { name: "Grounder-Base", code: "step-0002066", baseline: "—", variable: "论文版", data: "Mind2Web 7,341 + OpenMobile 8,264", trainable: "语言 LoRA", resolution: "980", pro: 5.4, v2: 73.7, status: "done" as Status },
+  { name: "Grounder-Desktop", code: "osatlas", baseline: "Grounder-Base", variable: "加 OS-Atlas", data: "再加 8,960 行", trainable: "语言 LoRA", resolution: "980", pro: 7.5, v2: 80.7, status: "done" as Status },
+  { name: "Grounder-HighRes", code: "hr98", baseline: "Grounder-Desktop", variable: "分辨率加视觉部分可训", data: "同 Desktop", trainable: "语言 + 视觉 LoRA", resolution: "1,372", pro: 13.0, v2: null, status: "failed" as Status },
+  { name: "Grounder-Tiles", code: "AnyRes", baseline: "Grounder-Desktop", variable: "输入改成总览图加切块", data: "同 Desktop，部分切块", trainable: "语言 LoRA", resolution: "980 分块", pro: 0.2, v2: 55.5, status: "failed" as Status },
+]
+
+export const inference = [
+  { name: "全图 980", code: "full @70", pro: 88, v2: 1027, seconds: null, kv: false, note: "基准" },
+  { name: "高清单图", code: "full @98", pro: 150, v2: 1011, seconds: null, kv: false, note: "" },
+  { name: "一次放大", code: "zoom98", pro: 376, v2: 1032, seconds: 3.0, kv: false, note: "" },
+  { name: "两次放大", code: "cascade3", pro: 400, v2: 1027, seconds: 5.1, kv: false, note: "建议作为默认" },
+  { name: "三窗口选优", code: "E1", pro: 409, v2: 1034, seconds: 11.7, kv: true, note: "对两次放大 p=0.49" },
+  { name: "四窗口选优", code: "E1+", pro: 427, v2: 1033, seconds: null, kv: true, note: "次要分析，需独立确认" },
+  { name: "三窗口 + 压缩", code: "kvchain default", pro: 405, v2: 1029, seconds: null, kv: true, note: "不退步，但无可测收益" },
+  { name: "三窗口 + 强压缩", code: "kvchain strong", pro: 396, v2: 1011, seconds: null, kv: true, note: "v2 显著退步" },
+]
+
+export const proTotal = 1181
+export const v2Total = 1272
+
+export const datasets = [
+  { name: "OpenMobile 离线集", use: "规划", size: "1,501 步", role: "正式测试", note: "含论文口径和统一口径" },
+  { name: "AndroidWorld 正式题", use: "规划", size: "116 题", role: "正式测试", note: "seed 30，域内，已反复使用" },
+  { name: "AndroidWorld 开发题", use: "规划", size: "209 题", role: "开发", note: "来自训练 seed，用于比较模型" },
+  { name: "AndroidControl", use: "规划", size: "1,543 episode / 8,444 步", role: "尚未测我们的模型", note: "train 13,603 个 episode，需要先做级联" },
+  { name: "ScreenSpot-v2", use: "定位", size: "1,272 题", role: "正式测试", note: "主要作不退步检查" },
+  { name: "ScreenSpot-Pro", use: "定位", size: "1,581 题", role: "正式测试", note: "主比较用 1,181 题，已反复使用" },
+  { name: "Mind2Web", use: "定位", size: "6,055 条", role: "正式测试", note: "裁剪图约 81%，整页 27%" },
+  { name: "OpenMobile 定位", use: "定位", size: "—", role: "正式测试", note: "手机端定位" },
+]
+
+export const published = [
+  { benchmark: "ScreenSpot-v2", theirs: "90.7%", ours: "80.7%" },
+  { benchmark: "ScreenSpot-Pro", theirs: "52.9%", ours: "12.7%（单图），33.9–36.2%（放大）" },
+  { benchmark: "AndroidWorld", theirs: "53.5%", ours: "27.6%（域内）" },
+  { benchmark: "MobileWorld", theirs: "25.6%", ours: "未测" },
+  { benchmark: "OSWorld-Verified", theirs: "29.4%", ours: "未测" },
+  { benchmark: "Mind2Web", theirs: "未报告", ours: "约 81%（裁剪图）" },
+]
+
+export const controlGaps = [
+  { title: "没有噪声基线", detail: "两个 Seed4242 都没训练，不知道换种子本身会差多少。SelfLearn 的 +9 里有多少是波动说不清。这是最大的缺口。" },
+  { title: "一次改了多个变量", detail: "Teacher 同时加数据和换配方；SelfLearn-Round2 同时去掉第 0 步并加新数据；Grounder-HighRes 同时改分辨率和可训练部分。" },
+  { title: "步数跟着数据量变", detail: "epoch 固定为 2，步数从 3,404 到 10,672 不等，数据量和训练步数的影响分不开。" },
+  { title: "硬件不一致", detail: "SelfLearn-Stop 的 epoch 1 在 4×H100，epoch 2 在 2×A800，RNG 没有恢复。" },
+]
+
+export const nextSteps = [
+  { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
+  { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
+  { title: "评测 SelfLearn-Stop", why: "看能否解决做对了不停", state: "等决定" },
+  { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
+]
