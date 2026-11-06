@@ -33,7 +33,7 @@ export const planners: Planner[] = [
   { name: "TeacherCorrect", code: "dagger", baseline: "Teacher", variable: "加教师纠错数据", addedRows: 4753, totalRows: 31981, seed: 42, steps: 3998, hardware: "4×H100", aw116: 27, dev209: null, status: "done" },
   { name: "SelfLearn", code: "rft", baseline: "Teacher", variable: "加学生成功轨迹和分叉点纠正", addedRows: 1466, totalRows: 28694, seed: 42, steps: 3588, hardware: "4×H100", aw116: 32, dev209: 60, status: "done" },
   { name: "SelfLearn-Seed4242", code: "rfts4242", baseline: "SelfLearn", variable: "只换 seed", addedRows: 0, totalRows: 28694, seed: 4242, steps: 3588, hardware: "待定", aw116: null, dev209: null, status: "not-trained" },
-  { name: "SelfLearn-Stop", code: "rftterm", baseline: "SelfLearn", variable: "加结束相关的行", addedRows: 259, totalRows: 28953, seed: 42, steps: 3620, hardware: "H100 + A800", aw116: null, dev209: null, status: "pending", note: "已训完，未评测" },
+  { name: "SelfLearn-Stop", code: "rftterm", baseline: "SelfLearn", variable: "加结束相关的行", addedRows: 259, totalRows: 28953, seed: 42, steps: 3620, hardware: "H100 + A800", aw116: 26, dev209: 54, status: "done" },
   { name: "SelfLearn-NoFirstStep", code: "rftnos0", baseline: "SelfLearn", variable: "去掉第 0 步的行", addedRows: 1281, totalRows: 28509, seed: 42, steps: 3564, hardware: "待定", aw116: null, dev209: null, status: "not-trained" },
   { name: "SelfLearn-Round2", code: "rftr1", baseline: "SelfLearn-NoFirstStep", variable: "加第二轮学生数据", addedRows: 2078, totalRows: 29306, seed: 42, steps: 3664, hardware: "4×H100", aw116: 31, dev209: 59, status: "done" },
   { name: "SelfLearn-AC14k", code: "rftac", baseline: "SelfLearn", variable: "加 1.4 万行 AndroidControl", addedRows: 15469, totalRows: 42697, seed: 42, steps: 5338, hardware: "4×H100", aw116: 23, dev209: 68, status: "done" },
@@ -91,7 +91,6 @@ export const controlGaps = [
 export const nextSteps = [
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
-  { title: "评测 SelfLearn-Stop", why: "看能否解决做对了不停", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
 ]
 
