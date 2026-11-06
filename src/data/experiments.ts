@@ -94,3 +94,41 @@ export const nextSteps = [
   { title: "评测 SelfLearn-Stop", why: "看能否解决做对了不停", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
 ]
+
+export const dataColumns = [
+  { key: "openMobile", label: "OpenMobile", hint: "基础手机示范" },
+  { key: "teacher", label: "教师轨迹", hint: "教师模型在 AW 上的成功操作" },
+  { key: "correction", label: "教师纠错", hint: "教师纠正学生的错误" },
+  { key: "student", label: "学生轨迹", hint: "模型自己的成功操作和分叉点纠正" },
+  { key: "stop", label: "结束数据", hint: "教模型何时停下" },
+  { key: "round2", label: "第二轮学生", hint: "用 SelfLearn 再采一轮" },
+  { key: "androidControl", label: "AndroidControl", hint: "外部手机示范，无结束动作" },
+] as const
+
+export type DataKey = (typeof dataColumns)[number]["key"]
+
+export type Matrix = {
+  name: string
+  family: string
+  question: string
+  rows: Partial<Record<DataKey, number>>
+  changed: (DataKey | "seed" | "recipe")[]
+}
+
+const base = { openMobile: 14167, teacher: 13061 }
+
+export const matrix: Matrix[] = [
+  { name: "Submission", family: "基线", question: "论文投稿版，作为起点", rows: { openMobile: 13004 }, changed: [] },
+  { name: "Teacher", family: "基线", question: "加教师轨迹有没有用？", rows: base, changed: ["teacher", "recipe"] },
+  { name: "Teacher-Seed4242", family: "噪声检查", question: "Teacher 换种子会差多少？", rows: base, changed: ["seed"] },
+  { name: "TeacherCorrect", family: "教师路线", question: "让教师纠错有没有用？", rows: { ...base, correction: 4753 }, changed: ["correction"] },
+  { name: "SelfLearn", family: "自学路线", question: "学自己的成功轨迹有没有用？", rows: { ...base, student: 1466 }, changed: ["student"] },
+  { name: "SelfLearn-Seed4242", family: "噪声检查", question: "SelfLearn 换种子会差多少？", rows: { ...base, student: 1466 }, changed: ["seed"] },
+  { name: "SelfLearn-Stop", family: "自学路线", question: "加结束数据能解决做对了不停吗？", rows: { ...base, student: 1466, stop: 259 }, changed: ["stop"] },
+  { name: "SelfLearn-NoFirstStep", family: "自学路线", question: "去掉第 0 步的行有影响吗？", rows: { ...base, student: 1281 }, changed: ["student"] },
+  { name: "SelfLearn-Round2", family: "自学路线", question: "再采一轮还能提升吗？", rows: { ...base, student: 1281, round2: 797 }, changed: ["round2"] },
+  { name: "SelfLearn-AC14k", family: "外部数据", question: "加 1.4 万行 AndroidControl 有用吗？", rows: { ...base, student: 1466, androidControl: 14003 }, changed: ["androidControl"] },
+  { name: "SelfLearn-ACFull", family: "外部数据", question: "AndroidControl 用满会怎样？", rows: { ...base, student: 1466, androidControl: 56682 }, changed: ["androidControl"] },
+]
+
+export const families = ["基线", "噪声检查", "教师路线", "自学路线", "外部数据"]
