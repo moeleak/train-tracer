@@ -6,7 +6,7 @@ import { dataColumns, families, fixedRecipe, matrix, type Planner, planners, typ
 import { cn } from "@/lib/utils"
 
 const statusText: Record<Status, string> = {
-  done: "已出结果", pending: "待评测", stopped: "已停止", failed: "失败", "not-trained": "未训练",
+  done: "已出结果", training: "训练中", pending: "待评测", stopped: "已停止", failed: "失败", "not-trained": "未训练",
 }
 
 function Delta({ before, after }: { before: number | null | undefined; after: number | null }) {

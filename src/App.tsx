@@ -13,11 +13,11 @@ import {
 } from "@/data/experiments"
 
 const statusLabel: Record<Status, string> = {
-  done: "已完成", pending: "待评测", stopped: "已停止", failed: "失败", "not-trained": "未训练",
+  done: "已完成", training: "训练中", pending: "待评测", stopped: "已停止", failed: "失败", "not-trained": "未训练",
 }
 
 const statusVariant: Record<Status, "default" | "secondary" | "destructive" | "outline"> = {
-  done: "default", pending: "secondary", stopped: "outline", failed: "destructive", "not-trained": "outline",
+  done: "default", training: "secondary", pending: "secondary", stopped: "outline", failed: "destructive", "not-trained": "outline",
 }
 
 const n = (value: number | null) => (value === null ? "—" : value.toLocaleString("en-US"))
