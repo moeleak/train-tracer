@@ -16,7 +16,7 @@ export type Planner = {
   note?: string
 }
 
-export const updatedAt = "2026-11-07"
+export const updatedAt = "2026-11-08"
 
 export const fixedRecipe = [
   "每次从同一底座和 adapter 从头训练，不接着上一个模型训",
@@ -37,7 +37,7 @@ export const planners: Planner[] = [
   { name: "SelfLearn-NoFirstStep", code: "rftnos0", baseline: "SelfLearn", variable: "去掉第 0 步的行", addedRows: 1281, totalRows: 28509, seed: 42, steps: 3564, hardware: "待定", aw116: null, dev209: null, status: "not-trained" },
   { name: "SelfLearn-Round2", code: "rftr1", baseline: "SelfLearn-NoFirstStep", variable: "加第二轮学生数据", addedRows: 2078, totalRows: 29306, seed: 42, steps: 3664, hardware: "4×H100", aw116: 31, dev209: 59, status: "done" },
   { name: "SelfLearn-AC14k", code: "rftac", baseline: "SelfLearn", variable: "加 1.4 万行 AndroidControl", addedRows: 15469, totalRows: 42697, seed: 42, steps: 5338, hardware: "4×H100", aw116: 23, dev209: 68, status: "done" },
-  { name: "SelfLearn-ACFull", code: "rftacfull", baseline: "SelfLearn-AC14k", variable: "AC 换成全量", addedRows: 58148, totalRows: 85376, seed: 42, steps: 10672, hardware: "2×A800", aw116: null, dev209: null, status: "training", note: "11-07 从头重训，约 3.5 天；之后测 AndroidControl、AW 和开发题" },
+  { name: "SelfLearn-ACFull", code: "rftacfull", baseline: "SelfLearn-AC14k", variable: "AC 换成全量", addedRows: 58148, totalRows: 85376, seed: 42, steps: 10672, hardware: "2×A800", aw116: null, dev209: null, status: "stopped", note: "11-08 按决定停止（约 11 小时，未到 epoch，无 checkpoint）" },
 ]
 
 export const grounders = [
@@ -92,7 +92,7 @@ export const nextSteps = [
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
-  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "等 SelfLearn-ACFull 训完" },
+  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "等决定（SelfLearn-ACFull 已停）" },
 ]
 
 export const dataColumns = [
