@@ -16,7 +16,7 @@ export type Planner = {
   note?: string
 }
 
-export const updatedAt = "2026-11-11"
+export const updatedAt = "2026-11-12"
 
 export const fixedRecipe = [
   "每次从同一底座和 adapter 从头训练，不接着上一个模型训",
@@ -103,6 +103,7 @@ export const controlGaps = [
 ]
 
 export const nextSteps = [
+  { title: "错题引导第 2 轮（SelfLearn-Guided 的数据）", why: "SelfLearn 只能从自己做对的题里学。先用 1,031 个新实例找出它做错的题，再让教师在错题上接手做完，只留官方检查器判成功的过程", state: "运行中：第 1 步找错题（11-12 01:43 开始）；教师接管和文字提示的采集器已写好，等找错题跑完后先小规模试跑" },
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
