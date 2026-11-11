@@ -8,7 +8,7 @@ import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } f
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  controlGaps, datasets, grounders, inference, nextSteps, 
+  controlGaps, datasets, grounders, groundingBenchmarkNotes, groundingBenchmarks, inference, nextSteps, 
   proTotal, published, type Status, updatedAt, v2Total,
 } from "@/data/experiments"
 
@@ -136,6 +136,7 @@ function Overview() {
 
 function Grounders() {
   return (
+    <div className="grid gap-6">
     <div className="grid gap-4 md:grid-cols-2">
       {grounders.map((g) => {
         const baseline = grounders.find((item) => item.name === g.baseline)
@@ -161,6 +162,45 @@ function Grounders() {
           </Card>
         )
       })}
+    </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>三个新定位基准</CardTitle>
+          <CardDescription>主口径是全图 980 单张截图，次要口径是两次放大。分数是百分比，p 值是 Grounder-Desktop 对 Grounder-Base 的配对检验。</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>基准</TableHead>
+                <TableHead className="text-right">Base 全图</TableHead><TableHead className="text-right">Desktop 全图</TableHead>
+                <TableHead className="text-right">Base 放大</TableHead><TableHead className="text-right">Desktop 放大</TableHead>
+                <TableHead className="text-right">手机子集（全图）</TableHead><TableHead className="text-right">p</TableHead><TableHead>公开分数</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {groundingBenchmarks.map((b) => (
+                <TableRow key={b.name}>
+                  <TableCell>
+                    <div className="font-medium">{b.name}</div>
+                    <div className="text-foreground/75 text-xs">{b.size}，{b.metric}</div>
+                  </TableCell>
+                  <TableCell className="text-right tabular-nums">{b.base.toFixed(1)}</TableCell>
+                  <TableCell className="text-right font-semibold tabular-nums">{b.desktop.toFixed(1)}</TableCell>
+                  <TableCell className="text-right tabular-nums">{b.baseZoom.toFixed(1)}</TableCell>
+                  <TableCell className="text-right font-semibold tabular-nums">{b.desktopZoom.toFixed(1)}</TableCell>
+                  <TableCell className="text-right tabular-nums">{b.mobileBase.toFixed(1)} → {b.mobileDesktop.toFixed(1)}</TableCell>
+                  <TableCell className="text-right tabular-nums">{b.p}</TableCell>
+                  <TableCell className="whitespace-normal">{b.published}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ul className="grid list-disc gap-1 pl-5 text-[15px]">
+            {groundingBenchmarkNotes.map((note) => <li key={note}>{note}</li>)}
+          </ul>
+        </CardContent>
+      </Card>
     </div>
   )
 }

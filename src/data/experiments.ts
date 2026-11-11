@@ -16,7 +16,7 @@ export type Planner = {
   note?: string
 }
 
-export const updatedAt = "2026-11-08"
+export const updatedAt = "2026-11-11"
 
 export const fixedRecipe = [
   "每次从同一底座和 adapter 从头训练，不接着上一个模型训",
@@ -41,10 +41,24 @@ export const planners: Planner[] = [
 ]
 
 export const grounders = [
-  { name: "Grounder-Base", code: "step-0002066", baseline: "—", variable: "论文版", data: "Mind2Web 7,341 + OpenMobile 8,264", trainable: "语言 LoRA", resolution: "980", pro: 5.4, v2: 73.7, status: "done" as Status },
+  { name: "Grounder-Base", code: "step-0002066", baseline: "—", variable: "论文版", data: "Mind2Web 7,341 + OpenMobile 8,264", trainable: "语言 LoRA", resolution: "980", pro: 5.4, v2: 76.6, status: "done" as Status },
   { name: "Grounder-Desktop", code: "osatlas", baseline: "Grounder-Base", variable: "加 OS-Atlas", data: "再加 8,960 行", trainable: "语言 LoRA", resolution: "980", pro: 7.5, v2: 80.7, status: "done" as Status },
   { name: "Grounder-HighRes", code: "hr98", baseline: "Grounder-Desktop", variable: "分辨率加视觉部分可训", data: "同 Desktop", trainable: "语言 + 视觉 LoRA", resolution: "1,372", pro: 13.0, v2: null, status: "failed" as Status },
   { name: "Grounder-Tiles", code: "AnyRes", baseline: "Grounder-Desktop", variable: "输入改成总览图加切块", data: "同 Desktop，部分切块", trainable: "语言 LoRA", resolution: "980 分块", pro: 0.2, v2: 55.5, status: "failed" as Status },
+]
+
+export const groundingBenchmarks = [
+  { name: "MMBench-GUI L2", size: "3,594 题", metric: "官方平均", base: 43.3, desktop: 49.2, baseZoom: 55.0, desktopZoom: 59.3, mobileBase: 60.9, mobileDesktop: 66.8, p: "1e-26", published: "UI-Ins-7B 83.1，MAI-UI-32B 91.3" },
+  { name: "VenusBench-GD", size: "6,165 题", metric: "官方总分（899 道拒答题记 0）", base: 22.8, desktop: 26.3, baseZoom: 36.4, desktopZoom: 39.9, mobileBase: 43.3, mobileDesktop: 46.4, p: "4e-23", published: "OS-Atlas-7B 27.4，UI-TARS-7B 39.7，Qwen2.5-VL-7B 41.1" },
+  { name: "UI-I2E-Bench", size: "1,477 题", metric: "准确率", base: 45.0, desktop: 52.2, baseZoom: 47.9, desktopZoom: 57.5, mobileBase: 58.7, mobileDesktop: 67.4, p: "9e-18", published: "OS-Atlas-7B 58.6，UI-TARS-1.5-7B 73.2，GTA1-7B 78.2" },
+]
+
+export const groundingBenchmarkNotes = [
+  "LLaDA-UI 没有报告这三个基准。公开分数用的是各模型自己的 prompt 和分辨率，只作参照。",
+  "Grounder-Desktop 在三个基准上都显著高于 Grounder-Base，手机子集上也成立。",
+  "两次放大只对横屏大图起作用，桌面和网页截图提升 10 到 16 个百分点，手机截图基本不变。",
+  "和训练数据没有同图同指令的题；去掉近似图后分数和结论不变。",
+  "Grounder-Base 的 v2 分数由 73.7% 更正为 76.6%：73.7% 是论文里 ScreenSpot v1 的分数，同在 v2 上是 974 对 1,027 题。",
 ]
 
 export const inference = [
