@@ -37,7 +37,7 @@ export const planners: Planner[] = [
   { name: "SelfLearn-NoFirstStep", code: "rftnos0", baseline: "SelfLearn", variable: "去掉第 0 步的行", addedRows: 1281, totalRows: 28509, seed: 42, steps: 3564, hardware: "待定", aw116: null, dev209: null, status: "not-trained" },
   { name: "SelfLearn-Round2", code: "rftr1", baseline: "SelfLearn-NoFirstStep", variable: "加第二轮学生数据", addedRows: 2078, totalRows: 29306, seed: 42, steps: 3664, hardware: "4×H100", aw116: 31, dev209: 59, status: "done" },
   { name: "SelfLearn-AC14k", code: "rftac", baseline: "SelfLearn", variable: "加 1.4 万行 AndroidControl", addedRows: 15469, totalRows: 42697, seed: 42, steps: 5338, hardware: "4×H100", aw116: 23, dev209: 68, status: "done" },
-  { name: "SelfLearn-ACFull", code: "rftacfull", baseline: "SelfLearn-AC14k", variable: "AC 换成全量", addedRows: 58148, totalRows: 85376, seed: 42, steps: 10672, hardware: "8×A100", aw116: null, dev209: null, status: "training", note: "11-11 21:45 开训（8 卡，全局 batch 仍为 16）；预计 11-12 中午前后训完" },
+  { name: "SelfLearn-ACFull", code: "rftacfull", baseline: "SelfLearn-AC14k", variable: "AC 换成全量", addedRows: 58148, totalRows: 85376, seed: 42, steps: 10672, hardware: "8×A100", aw116: null, dev209: null, status: "done", note: "11-12 训完（8 卡约 12.8 小时），收尾检查通过；还没评测" },
 ]
 
 export const grounders = [
