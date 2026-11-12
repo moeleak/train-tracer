@@ -105,7 +105,9 @@ export const controlGaps = [
 export const nextSteps = [
   { title: "错题引导第 2 轮（SelfLearn-Guided 的数据）", why: "SelfLearn 只能从自己做对的题里学。先找出它做错的题，再让教师在错题上接手做完，只留官方检查器判成功的过程", state: "试跑完成，等决定是否开全量。找错题：1,031 个新实例做对 178 个（17.3%），错题 853 个，25 个模板一次都没做对。教师接管试跑（21 个错题）：沿用原步数上限时教师做成 2 个；接管后给教师单独的步数预算后做成 10 个。文字提示试点 100 个错题做成 7 个，和重跑本身的波动分不开" },
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
-  { title: "训练 SelfLearn-NoFirstStep",  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "完成（11-12）：步准确率 33.73% / 51.29% / 56.83%；全集比 14k 抽样 +5.5 点 [4.8, 6.3]，比不加 +23.1 点，均显著。只说明 AndroidControl 域内有提升，AndroidWorld 待评" },SelfLearn-ACFull 三个规划器配对比较", state: "进行中：SelfLearn-ACFull 的规划器阶段已跑完（动作类型准确率 80.4%，未配对的临时数字）；另两个模型、定位和打分等评测 GPU 空出来" },
+  { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
+  { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
+  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "完成（11-12）：步准确率 33.73% / 51.29% / 56.83%；全集比 14k 抽样 +5.5 点 [4.8, 6.3]，比不加 +23.1 点，均显著。只说明 AndroidControl 域内有提升，AndroidWorld 待评" },SelfLearn-ACFull 三个规划器配对比较", state: "进行中：SelfLearn-ACFull 的规划器阶段已跑完（动作类型准确率 80.4%，未配对的临时数字）；另两个模型、定位和打分等评测 GPU 空出来" },
   { title: "LLaDA-UI 在 AndroidControl 测试集上", why: "LLaDA-UI 的论文没有报告 AndroidControl；用同一份 8,444 步测试行和同一个打分函数，与我们三个规划器逐步配对", state: "运行中：协议已登记，61 步冒烟通过，全量每步约 12 秒，预计 11-13 中午前后跑完" },
   { title: "定位的移动端对比", why: "ScreenSpot-Pro 全是桌面专业软件，没有移动端子集；改在 ScreenSpot-V2、MMBench-GUI L2、VenusBench-GD、UI-I2E-Bench 的手机子集上比较 LLaDA-UI 和我们的两个 grounder", state: "运行中。ScreenSpot-Pro 已按相同题集更正：全集 1,581 题上 Grounder-Base 5.44%，Grounder-Desktop 7.59%（之前的 7.5% 是 1,181 题子集上的）" },
 ]
