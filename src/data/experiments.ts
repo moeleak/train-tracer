@@ -107,7 +107,7 @@ export const nextSteps = [
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
-  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "等决定（SelfLearn-ACFull 的状态见规划器表）" },
+  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "进行中：SelfLearn-ACFull 的规划器阶段已跑完（动作类型准确率 80.4%，未配对的临时数字）；另两个模型、定位和打分等评测 GPU 空出来" },
 ]
 
 export const dataColumns = [
