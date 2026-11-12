@@ -108,6 +108,8 @@ export const nextSteps = [
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
   { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "进行中：SelfLearn-ACFull 的规划器阶段已跑完（动作类型准确率 80.4%，未配对的临时数字）；另两个模型、定位和打分等评测 GPU 空出来" },
+  { title: "LLaDA-UI 在 AndroidControl 测试集上", why: "LLaDA-UI 的论文没有报告 AndroidControl；用同一份 8,444 步测试行和同一个打分函数，与我们三个规划器逐步配对", state: "运行中：协议已登记，61 步冒烟通过，全量每步约 12 秒，预计 11-13 中午前后跑完" },
+  { title: "定位的移动端对比", why: "ScreenSpot-Pro 全是桌面专业软件，没有移动端子集；改在 ScreenSpot-V2、MMBench-GUI L2、VenusBench-GD、UI-I2E-Bench 的手机子集上比较 LLaDA-UI 和我们的两个 grounder", state: "运行中。ScreenSpot-Pro 已按相同题集更正：全集 1,581 题上 Grounder-Base 5.44%，Grounder-Desktop 7.59%（之前的 7.5% 是 1,181 题子集上的）" },
 ]
 
 export const dataColumns = [
