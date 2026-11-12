@@ -103,11 +103,11 @@ export const controlGaps = [
 ]
 
 export const nextSteps = [
-  { title: "错题引导第 2 轮（SelfLearn-Guided 的数据）", why: "SelfLearn 只能从自己做对的题里学。先用 1,031 个新实例找出它做错的题，再让教师在错题上接手做完，只留官方检查器判成功的过程", state: "运行中：第 1 步找错题（11-12 01:43 开始）；教师接管和文字提示的采集器已写好，等找错题跑完后先小规模试跑" },
+  { title: "错题引导第 2 轮（SelfLearn-Guided 的数据）", why: "SelfLearn 只能从自己做对的题里学。先找出它做错的题，再让教师在错题上接手做完，只留官方检查器判成功的过程", state: "试跑完成，等决定是否开全量。找错题：1,031 个新实例做对 178 个（17.3%），错题 853 个，25 个模板一次都没做对。教师接管试跑（21 个错题）：沿用原步数上限时教师做成 2 个；接管后给教师单独的步数预算后做成 10 个。文字提示试点 100 个错题做成 7 个，和重跑本身的波动分不开" },
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
-  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "等决定（SelfLearn-ACFull 已停）" },
+  { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "等决定（SelfLearn-ACFull 的状态见规划器表）" },
 ]
 
 export const dataColumns = [
