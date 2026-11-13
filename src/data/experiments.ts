@@ -109,7 +109,7 @@ export const nextSteps = [
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
   { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "完成（11-12）：步准确率 33.73% / 51.29% / 56.83%；全集比 14k 抽样 +5.5 点 [4.8, 6.3]，比不加 +23.1 点，均显著。只说明 AndroidControl 域内有提升，AndroidWorld 待评" },
-  { title: "LLaDA-UI 在 AndroidControl 测试集上", why: "LLaDA-UI 的论文没有报告 AndroidControl；用同一份 8,444 步测试行和同一个打分函数，与我们三个规划器逐步配对", state: "运行中，预计 11-13 上午跑完。已跑完的 1,349 步（随机抽到的 episode）上步准确率 46.3%，这是临时数字；其中约 13% 的输出在动作写完前就结束，按协议记错" },
+  { title: "LLaDA-UI 在 AndroidControl 测试集上", why: "LLaDA-UI 的论文没有报告 AndroidControl；用同一份 8,444 步测试行和同一个打分函数，与我们三个规划器逐步配对", state: "完成。步准确率：LLaDA-UI 45.9%，SelfLearn 33.7%，SelfLearn-AC14k 51.3%，SelfLearn-ACFull 56.8%，三组配对都显著。LLaDA-UI 高于没用过 AndroidControl 数据的 SelfLearn，低于两个在 AndroidControl 上微调过的模型（域内）。LLaDA-UI 点击更准（52.8% 对 50.3%），输在滚动、打开 app、返回。它有 11% 的输出被公开的 HF 解码提前截断，按协议记错；只看未截断的步是 51.5%（有选择偏差）" },
   { title: "定位的移动端对比", why: "ScreenSpot-Pro 全是桌面专业软件，没有移动端子集；改在四个基准的手机子集上比较 LLaDA-UI（16.7B）和我们的 grounder（8.46B）", state: "完成。LLaDA-UI 对 Grounder-Desktop（全图 980）：ScreenSpot-V2 mobile 91.8 对 86.0，MMBench-GUI L2 手机 87.2 对 66.6，UI-I2E-Bench mobile 81.3 对 67.4，VenusBench-GD mobile 77.1 对 46.4，四项都显著。LLaDA-UI 在 ScreenSpot-V2 全集本地复现 91.75（论文 90.7）。ScreenSpot-Pro 按相同题集更正：全集 1,581 题上 Grounder-Base 5.44%，Grounder-Desktop 7.59%" },
 ]
 
