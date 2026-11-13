@@ -38,7 +38,7 @@ export const planners: Planner[] = [
   { name: "SelfLearn-Round2", code: "rftr1", baseline: "SelfLearn-NoFirstStep", variable: "加第二轮学生数据", addedRows: 2078, totalRows: 29306, seed: 42, steps: 3664, hardware: "4×H100", aw116: 31, dev209: 59, status: "done" },
   { name: "SelfLearn-AC14k", code: "rftac", baseline: "SelfLearn", variable: "加 1.4 万行 AndroidControl", addedRows: 15469, totalRows: 42697, seed: 42, steps: 5338, hardware: "4×H100", aw116: 23, dev209: 68, status: "done" },
   { name: "SelfLearn-ACFull", code: "rftacfull", baseline: "SelfLearn-AC14k", variable: "AC 换成全量", addedRows: 58148, totalRows: 85376, seed: 42, steps: 10672, hardware: "8×A100", aw116: null, dev209: null, status: "done", note: "11-12 训完（8 卡约 12.8 小时）。AndroidControl 测试集步准确率 56.83%（8,444 步），比 SelfLearn-AC14k 的 51.29% 高 5.5 点、比 SelfLearn 的 33.73% 高 23.1 点，配对检验都显著；AndroidWorld 还没评测" },
-  { name: "SelfLearn-Guided", code: "guided", baseline: "SelfLearn", variable: "加教师接管后做成的过程", addedRows: 5354, totalRows: 32582, seed: 42, steps: 4074, hardware: "8×A100", aw116: null, dev209: null, status: "pending", note: "11-13 03:24 训完，收尾检查通过；评测排队中（OpenMobile 在跑，开发集 209 和 AndroidWorld 116 等评测机空出）。SelfLearn 是 4×H100 训的，加噪随机流不同，比较不是严格只变数据" },
+  { name: "SelfLearn-Guided", code: "guided", baseline: "SelfLearn", variable: "加教师接管后做成的过程", addedRows: 5354, totalRows: 32582, seed: 42, steps: 4074, hardware: "8×A100", aw116: 29, dev209: 67, status: "done", note: "没有显著提升：开发集 67 对 60（p = 0.12），正式题 29 对 32（p = 0.61），OpenMobile 45.37% 对 46.57%（−1.2 点，不显著）。提升只在有引导数据的模板上，重复动作率升高。SelfLearn 是 4×H100 训的，比较不是严格只变数据" },
 ]
 
 export const grounders = [
@@ -104,7 +104,7 @@ export const controlGaps = [
 ]
 
 export const nextSteps = [
-  { title: "错题引导第 2 轮（SelfLearn-Guided 的数据）", why: "SelfLearn 只能从自己做对的题里学。先找出它做错的题，再让教师在错题上接手做完，只留官方检查器判成功的过程", state: "数据已定稿，SelfLearn-Guided 已训完，等评测。找错题：1,031 个新实例做对 178 个，错题 853 个。教师接管：805 个错题里 711 个有结局，做成 359 个（50.5%），94 个没跑；第 1 步一次都没做对的 17 个可采模板里 16 个拿到了成功过程。定稿 3,888 行。训完后跑开发集 209、AndroidWorld 116 和 OpenMobile" },
+  { title: "错题引导第 2 轮（SelfLearn-Guided）", why: "SelfLearn 只能从自己做对的题里学。先找出它做错的题，再让教师在错题上接手做完，只留官方检查器判成功的过程", state: "完成（11-13）：教师在 711 个错题里做成 359 个，定稿 3,888 行；训出的 SelfLearn-Guided 三项评测都没有显著超过 SelfLearn。开发集里当初从未做对的那组从 1/96 到 5/96，但 4 个来自同一个模板；数据最多的日历添加事件类仍然全错" },
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
   { title: "默认推理定为两次放大", why: "和选窗差异不显著，耗时不到一半", state: "等决定" },
