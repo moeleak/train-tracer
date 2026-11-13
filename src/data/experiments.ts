@@ -16,7 +16,7 @@ export type Planner = {
   note?: string
 }
 
-export const updatedAt = "2026-11-12"
+export const updatedAt = "2026-11-13"
 
 export const fixedRecipe = [
   "每次从同一底座和 adapter 从头训练，不接着上一个模型训",
@@ -46,6 +46,7 @@ export const grounders = [
   { name: "Grounder-Desktop", code: "osatlas", baseline: "Grounder-Base", variable: "加 OS-Atlas", data: "再加 8,960 行", trainable: "语言 LoRA", resolution: "980", pro: 7.5, v2: 80.7, status: "done" as Status },
   { name: "Grounder-HighRes", code: "hr98", baseline: "Grounder-Desktop", variable: "分辨率加视觉部分可训", data: "同 Desktop", trainable: "语言 + 视觉 LoRA", resolution: "1,372", pro: 13.0, v2: null, status: "failed" as Status },
   { name: "Grounder-Tiles", code: "AnyRes", baseline: "Grounder-Desktop", variable: "输入改成总览图加切块", data: "同 Desktop，部分切块", trainable: "语言 LoRA", resolution: "980 分块", pro: 0.2, v2: 55.5, status: "failed" as Status },
+  { name: "Grounder-Scale-90k", code: "scale-s1", baseline: "Grounder-Desktop", variable: "再加约 10 倍的公开定位数据（试点）", data: "再加 89,088 行（手机 38,400、桌面 21,504、网页 29,184）", trainable: "语言 LoRA", resolution: "980", pro: null, v2: null, status: "training" as Status },
 ]
 
 export const groundingBenchmarks = [
