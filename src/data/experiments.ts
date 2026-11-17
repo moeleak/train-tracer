@@ -16,7 +16,7 @@ export type Planner = {
   note?: string
 }
 
-export const updatedAt = "2026-11-15"
+export const updatedAt = "2026-11-17"
 
 export const fixedRecipe = [
   "每次从同一底座和 adapter 从头训练，不接着上一个模型训",
@@ -39,6 +39,8 @@ export const planners: Planner[] = [
   { name: "SelfLearn-AC14k", code: "rftac", baseline: "SelfLearn", variable: "加 1.4 万行 AndroidControl", addedRows: 15469, totalRows: 42697, seed: 42, steps: 5338, hardware: "4×H100", aw116: 23, dev209: 68, status: "done" },
   { name: "SelfLearn-ACFull", code: "rftacfull", baseline: "SelfLearn-AC14k", variable: "AC 换成全量", addedRows: 58148, totalRows: 85376, seed: 42, steps: 10672, hardware: "8×A100", aw116: null, dev209: null, status: "done", note: "11-12 训完（8 卡约 12.8 小时）。AndroidControl 测试集步准确率 56.83%（8,444 步），比 SelfLearn-AC14k 的 51.29% 高 5.5 点、比 SelfLearn 的 33.73% 高 23.1 点，配对检验都显著；AndroidWorld 还没评测" },
   { name: "SelfLearn-Guided", code: "guided", baseline: "SelfLearn", variable: "加教师接管后做成的过程", addedRows: 5354, totalRows: 32582, seed: 42, steps: 4074, hardware: "8×A100", aw116: 29, dev209: 67, status: "done", note: "没有显著提升：开发集 67 对 60（p = 0.12），正式题 29 对 32（p = 0.61），OpenMobile 45.37% 对 46.57%（−1.2 点，不显著）。提升只在有引导数据的模板上，重复动作率升高。SelfLearn 是 4×H100 训的，比较不是严格只变数据" },
+  { name: "SelfLearn-ACTag", code: "rftactagt", baseline: "SelfLearn-ACFull", variable: "AndroidControl 行加环境标记，再加 3,459 行新数据", addedRows: 3459, totalRows: null, seed: 42, steps: null, hardware: "8×A100", aw116: 33, dev209: 76, status: "done", note: "目前最好的规划器。OpenMobile 49.43%（742/1,501）" },
+  { name: "SelfLearn-ACTagBroad", code: "rftactagb", baseline: "SelfLearn-ACTag", variable: "再加 3,331 行覆盖更广的教师轨迹", addedRows: 3331, totalRows: null, seed: 42, steps: null, hardware: "8×A100", aw116: null, dev209: null, status: "done", note: "11-16 训完。OpenMobile 初步 48.70%（731/1,501），比 SelfLearn-ACTag 少 11 条，正式打分待做；同一台机器上重测 SelfLearn-ACTag 仍是 742。AndroidWorld 116 和开发集 209 待评测" },
 ]
 
 export const grounders = [
@@ -47,6 +49,7 @@ export const grounders = [
   { name: "Grounder-HighRes", code: "hr98", baseline: "Grounder-Desktop", variable: "分辨率加视觉部分可训", data: "同 Desktop", trainable: "语言 + 视觉 LoRA", resolution: "1,372", pro: 13.0, v2: null, status: "failed" as Status },
   { name: "Grounder-Tiles", code: "AnyRes", baseline: "Grounder-Desktop", variable: "输入改成总览图加切块", data: "同 Desktop，部分切块", trainable: "语言 LoRA", resolution: "980 分块", pro: 0.2, v2: 55.5, status: "failed" as Status },
   { name: "Grounder-Scale-90k", code: "scale-s1", baseline: "Grounder-Desktop", variable: "再加约 10 倍的公开定位数据（试点）", data: "再加 89,088 行（手机 38,400、桌面 21,504、网页 29,184）", trainable: "语言 LoRA", resolution: "980", pro: null, v2: 82.2, status: "done" as Status },
+  { name: "Grounder-Scale-90k-LR1e-4-AllRows", code: "r2 lr1e4-all", baseline: "Grounder-Scale-90k", variable: "学习率 1e-5 提到 1e-4，打包器不再丢行", data: "同 Scale-90k，所有行都训到", trainable: "语言 LoRA", resolution: "980", pro: null, v2: 83.4, status: "done" as Status },
 ]
 
 export const groundingBenchmarks = [
@@ -62,6 +65,7 @@ export const groundingBenchmarkNotes = [
   "和训练数据没有同图同指令的题；去掉近似图后分数和结论不变。",
   "Grounder-Base 的 v2 分数由 73.7% 更正为 76.6%：73.7% 是论文里 ScreenSpot v1 的分数，同在 v2 上是 974 对 1,027 题。",
   "Grounder-Scale-90k（选中第 2 个 epoch）的手机子集：MMBench-GUI L2 67.5、UI-I2E-Bench 67.8、VenusBench-GD 50.2；对 Grounder-Desktop 只有 VenusBench 显著提高（+3.9），另两个基本不变。",
+  "Grounder-Scale-90k-LR1e-4-AllRows（选中第 1 个 epoch）的手机子集：MMBench-GUI L2 70.0、UI-I2E-Bench 74.6、VenusBench-GD 49.7；对 Grounder-Scale-90k 只有 UI-I2E 显著提高（+6.8），MMBench +2.4 未过校正门槛，VenusBench 持平。LLaDA-UI 仍高 6.7 到 27.4 个百分点。",
 ]
 
 export const inference = [
@@ -90,7 +94,7 @@ export const datasets = [
 ]
 
 export const published = [
-  { benchmark: "ScreenSpot-v2", theirs: "90.7%", ours: "80.7%" },
+  { benchmark: "ScreenSpot-v2", theirs: "90.7%", ours: "83.4%" },
   { benchmark: "ScreenSpot-Pro", theirs: "52.9%", ours: "12.7%（单图），33.9–36.2%（放大）" },
   { benchmark: "AndroidWorld", theirs: "53.5%", ours: "27.6%（域内）" },
   { benchmark: "MobileWorld", theirs: "25.6%", ours: "未测" },
@@ -113,7 +117,7 @@ export const nextSteps = [
   { title: "评测 AndroidControl 测试集", why: "SelfLearn、SelfLearn-AC14k、SelfLearn-ACFull 三个规划器配对比较", state: "完成（11-12）：步准确率 33.73% / 51.29% / 56.83%；全集比 14k 抽样 +5.5 点 [4.8, 6.3]，比不加 +23.1 点，均显著。只说明 AndroidControl 域内有提升，AndroidWorld 待评" },
   { title: "LLaDA-UI 在 AndroidControl 测试集上", why: "LLaDA-UI 的论文没有报告 AndroidControl；用同一份 8,444 步测试行和同一个打分函数，与我们三个规划器逐步配对", state: "完成。步准确率：LLaDA-UI 45.9%，SelfLearn 33.7%，SelfLearn-AC14k 51.3%，SelfLearn-ACFull 56.8%，三组配对都显著。LLaDA-UI 高于没用过 AndroidControl 数据的 SelfLearn，低于两个在 AndroidControl 上微调过的模型（域内）。LLaDA-UI 点击更准（52.8% 对 50.3%），输在滚动、打开 app、返回。它有 11% 的输出被公开的 HF 解码提前截断，按协议记错；只看未截断的步是 51.5%（有选择偏差）" },
   { title: "定位器瓶颈诊断（Grounder-Scale-90k）", why: "离 LLaDA-UI 的 ScreenSpot-v2 还差 121 题，先弄清是学不进去、泛化不了，还是推理方式的问题，再决定第 2 轮怎么训", state: "完成（11-15）。它在自己训练过的 OS-Atlas 行上也只答对 68.5%，和没见过的验证行（67%）差不多，属于欠拟合；ScreenSpot-v2 的差距 121 题里 92 题是图标；独错题里六成是点错元素（多是相邻的同类图标），三成是按字面找文字，差一点的只有 2/40；网格 98 和两次放大都不能挽回（1,028、1,042 对 1,046）" },
-  { title: "第 2 轮定位器（学习率 / 容量）", why: "诊断显示欠拟合。并列三个候选：只把学习率从 1e-5 提到 1e-4；只加容量（LoRA 秩 128 并覆盖 MLP）；两者都改。先各跑 1,500 步的短程筛选，按事先定好的规则看训练行拟合和验证集，再选一个跑满", state: "8 卡套件已备好、未训练：四个筛选（约 12 小时）可直接开训；跑满约 19 小时（只改学习率）或 30 小时（加容量）。全参数方案评估过，本轮不做" },
+  { title: "第 2 轮定位器（学习率 / 容量）", why: "诊断显示欠拟合。并列三个候选：只把学习率从 1e-5 提到 1e-4；只加容量（LoRA 秩 128 并覆盖 MLP）；两者都改。先各跑 1,500 步的短程筛选，按事先定好的规则看训练行拟合和验证集，再选一个跑满", state: "完成（11-17）。筛选后选了只改学习率，并让打包器不再丢行，8 卡跑满。ScreenSpot-v2 1,061 题（83.4%），比 Grounder-Scale-90k 多 15 题（p = 0.18，不显著），离 LLaDA-UI 的 1,167 还差 106 题，其中 74 题是图标。三个 epoch 分别是 1,061、1,057、1,058，多训没有用；OS-Atlas 训练行仍只答对 69.5%，欠拟合基本没缓解" },
   { title: "定位的移动端对比", why: "ScreenSpot-Pro 全是桌面专业软件，没有移动端子集；改在四个基准的手机子集上比较 LLaDA-UI（16.7B）和我们的 grounder（8.46B）", state: "完成。LLaDA-UI 对 Grounder-Desktop（全图 980）：ScreenSpot-V2 mobile 91.8 对 86.0，MMBench-GUI L2 手机 87.2 对 66.6，UI-I2E-Bench mobile 81.3 对 67.4，VenusBench-GD mobile 77.1 对 46.4，四项都显著。LLaDA-UI 在 ScreenSpot-V2 全集本地复现 91.75（论文 90.7）。ScreenSpot-Pro 按相同题集更正：全集 1,581 题上 Grounder-Base 5.44%，Grounder-Desktop 7.59%" },
 ]
 
