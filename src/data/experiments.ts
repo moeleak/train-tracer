@@ -41,7 +41,7 @@ export const planners: Planner[] = [
   { name: "SelfLearn-Guided", code: "guided", baseline: "SelfLearn", variable: "加教师接管后做成的过程", addedRows: 5354, totalRows: 32582, seed: 42, steps: 4074, hardware: "8×A100", aw116: 29, dev209: 67, status: "done", note: "没有显著提升：开发集 67 对 60（p = 0.12），正式题 29 对 32（p = 0.61），OpenMobile 45.37% 对 46.57%（−1.2 点，不显著）。提升只在有引导数据的模板上，重复动作率升高。SelfLearn 是 4×H100 训的，比较不是严格只变数据" },
   { name: "SelfLearn-ACTag", code: "rftactagt", baseline: "SelfLearn-ACFull", variable: "AndroidControl 行加环境标记，再加 3,459 行新数据", addedRows: 3459, totalRows: null, seed: 42, steps: null, hardware: "8×A100", aw116: 33, dev209: 76, status: "done", note: "目前最好的规划器。OpenMobile 49.43%（742/1,501）" },
   { name: "SelfLearn-ACTagBroad", code: "rftactagb", baseline: "SelfLearn-ACTag", variable: "再加 3,331 行覆盖更广的教师轨迹", addedRows: 3331, totalRows: null, seed: 42, steps: null, hardware: "8×A100", aw116: 29, dev209: 75, status: "done", note: "11-16 训完。两项都没有提升：AndroidWorld 29/116 对 SelfLearn-ACTag 33（只新做对 3、只旧做对 7，p = 0.34），开发集 75/209 对 76（8 / 9，p = 1.0）。错误结束变少（31 → 20），但步数耗尽变多（42 → 58），重复动作 11.9% → 18.4%。OpenMobile 初步 48.70%（731/1,501），比 SelfLearn-ACTag 少 11 条，正式打分待做。这批数据不再沿用" },
-  { name: "SelfLearn-ACTag-RL", code: "grpo-pilot", baseline: "SelfLearn-ACTag", variable: "在线强化学习（GRPO）：模型自己采样做题，按官方检查器的成败调整", addedRows: null, totalRows: null, seed: 42, steps: null, hardware: "8×A100", aw116: null, dev209: null, status: "training", note: "11-18 开始的试点，6 轮：每轮在 48 个训练题上各采样 8 次（采样温度 1.3，只用于生成训练数据），同一题 8 次的成败互相比较，做对的那几次加强、做错的减弱，并用 KL 约束不离 SelfLearn-ACTag 太远。评测仍是 T=0。第 0、2、4、6 轮后在 64 个验证题上测，取最好的一轮，再在开发集上与 SelfLearn-ACTag 的 76/209 配对比较。中间结果：第 2 轮后验证 26/64（起点 25/64，逐题 2 对 1，p = 1.0），成功数没变，但失败方式变了：重复上一动作的步从 28.6% 降到 14.2%，步数耗尽 21 → 15，宣布完成但做错 13 → 20" },
+  { name: "SelfLearn-ACTag-RL", code: "grpo-pilot", baseline: "SelfLearn-ACTag", variable: "在线强化学习（GRPO）：模型自己采样做题，按官方检查器的成败调整", addedRows: null, totalRows: null, seed: 42, steps: null, hardware: "8×A100", aw116: null, dev209: null, status: "training", note: "11-18 开始的试点，6 轮：每轮在 48 个训练题上各采样 8 次（采样温度 1.3，只用于生成训练数据），同一题 8 次的成败互相比较，做对的那几次加强、做错的减弱，并用 KL 约束不离 SelfLearn-ACTag 太远。评测仍是 T=0。第 0、2、4、6 轮后在 64 个验证题上测，取最好的一轮，再在开发集上与 SelfLearn-ACTag 的 76/209 配对比较。中间结果：验证集起点 25/64，第 2 轮后 26/64，第 4 轮后 29/64（起点做对的全部保住，另多对 4 题，p = 0.125，还不显著）。第 4 轮起把每轮 8 次采样合成一次采集，每轮从约 2 小时缩到约 1 小时" },
 ]
 
 export const grounders = [
@@ -111,7 +111,7 @@ export const controlGaps = [
 ]
 
 export const nextSteps = [
-  { title: "在线强化学习试点（SelfLearn-ACTag-RL）", why: "加数据的做法在 AndroidWorld 上停在 29–33 题；文献里 SFT 之后做在线 RL（GRPO）是增益最大、最一致的一步。用户 11-18 批准只在生成训练数据时用 T>0 采样", state: "进行中（11-18 起，预计 16–18 小时）。第 2 轮后验证 26/64，起点 25/64，没有触发停止条件，继续第 3 轮" },
+  { title: "在线强化学习试点（SelfLearn-ACTag-RL）", why: "加数据的做法在 AndroidWorld 上停在 29–33 题；文献里 SFT 之后做在线 RL（GRPO）是增益最大、最一致的一步。用户 11-18 批准只在生成训练数据时用 T>0 采样", state: "进行中（11-18 起）。验证 25 → 26 → 29（第 0、2、4 轮后），第 5、6 轮进行中" },
   { title: "错题引导第 2 轮（SelfLearn-Guided）", why: "SelfLearn 只能从自己做对的题里学。先找出它做错的题，再让教师在错题上接手做完，只留官方检查器判成功的过程", state: "完成（11-13）：教师在 711 个错题里做成 359 个，定稿 3,888 行；训出的 SelfLearn-Guided 三项评测都没有显著超过 SelfLearn。开发集里当初从未做对的那组从 1/96 到 5/96，但 4 个来自同一个模板；数据最多的日历添加事件类仍然全错" },
   { title: "训练 Teacher-Seed4242 和 SelfLearn-Seed4242", why: "补上噪声基线", state: "等决定" },
   { title: "训练 SelfLearn-NoFirstStep", why: "拆开 SelfLearn-Round2 的两个变量", state: "等决定" },
